@@ -12,9 +12,13 @@ public class UserRepository {
     private LiveData<List<User>> allUsers;
 
     public UserRepository(Application application) {
+        //Obtain a copy of database
         AppDatabase db = AppDatabase.getDatabase(application);
 
+        //Retrieve DAO
         userDao = db.userDao();
+
+        //retrieve all the user record
         allUsers = userDao.loadAllUsers();
     }
     
@@ -25,6 +29,7 @@ public class UserRepository {
     public void insertUser(User user){
         new insertAsyncTask(userDao).execute(user);
     }
+
 
     //<Param, Progress, Results>
     private static class insertAsyncTask extends AsyncTask<User, Void, Void> {
@@ -39,5 +44,23 @@ public class UserRepository {
             userDao.insertUser(users[0]);
             return null;
         }
+    }
+
+    private static class deleteWordAsyncTask extends AsyncTask<User, Void, Void> {
+        private UserDao userDao;
+
+        deleteWordAsyncTask(UserDao dao) {
+            userDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(User... users) {
+            userDao.deleteUser(users[0]);
+            return null;
+        }
+    }
+
+    public void deleteUser(User user)  {
+        new deleteWordAsyncTask(userDao).execute(user);
     }
 }

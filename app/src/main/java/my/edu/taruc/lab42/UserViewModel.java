@@ -15,7 +15,9 @@ public class UserViewModel extends AndroidViewModel {
 
     public UserViewModel(@NonNull Application application) {
         super(application);
+        //Create an isntance of repository
         userRepository = new UserRepository(application);
+        //Retrieve all the user records
         allUsers = userRepository.getAllUsers();
     }
 
@@ -26,4 +28,6 @@ public class UserViewModel extends AndroidViewModel {
     public  void insertUser(User user){
         userRepository.insertUser(user);
     }
+
+    public void deleteUser(User user) {userRepository.deleteUser(user);}
 }
